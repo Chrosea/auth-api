@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/signup', signUp);
 router.post('/login', login); // authenticate
+router.post('/logout', invalidateToken);
 router.post('/user/assign/:userId/:roleId', addRoleToUser);
 router.post('/user/role/:roleId', checkRoleOfUser);
 router.post('/user/all-roles', getAllRolesUser);

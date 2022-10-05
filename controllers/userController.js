@@ -2,6 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const Role = require('../models/Role');
 const { verifyToken, createToken } = require('../helper/auth');
+const redisClient = require('../helper/init_redis');
 
 const hashPassword = async (password) => {
     return await bcrypt.hash(password, 10);
@@ -44,7 +45,7 @@ const login = async (req, res, next) => {
             accessToken
         });
     } catch (error) {
-        res.status(403).json({error: error.response.data.message});
+        res.status(403).json({ error: error.response.data.message });
     }
 }
 
@@ -83,7 +84,7 @@ const checkRoleOfUser = async (req, res, next) => {
     try {
         const { roleId } = req.params
         const { accessToken } = req.body;
-        const userId = await verifyToken(accessToken);
+        const userId = await verifyToken(accessToken, res);
         const user = await User.findById(userId);
         if (!user) return next(new Error('Invalid token for a user'))
 
@@ -100,7 +101,7 @@ const checkRoleOfUser = async (req, res, next) => {
 const getAllRolesUser = async (req, res, next) => {
     try {
         const { accessToken } = req.body;
-        const userId = await verifyToken(accessToken);
+        const userId = await verifyToken(accessToken, res);
         const user = await User.findById(userId);
         if (!user) return next(new Error('Invalid token for a user'))
         res.json({
@@ -110,22 +111,23 @@ const getAllRolesUser = async (req, res, next) => {
         next(error)
     }
 }
-/* TODO
- * invalidate token is not recommended sense it break the intention of
+/* Invalidate token is not recommended sense it break the intention of
  * stateless verification, but one work around is to use blacklist to 
- * store all the token and do another layer of verification. 
+ * store all the token and do another layer of verification. Options here
+ * is to store in cache, redis server, etc.
  * 
  * Another option is to change JWT_SECRET periodically so it will invalidate
  * all token.
- * 
- * node.js packages have limited support for jwt blacklist, I have to 
- * switch to another jwt library if I want to use the blacklist package.
- * Due to time limit and my miss in plan I can only left it with TODO
  */
 const invalidateToken = async (req, res, next) => {
-
+    const { accessToken } = req.body;
+    const token_key = `bl_${accessToken}`;
+    const expireTime = parseInt((+new Date) / 1000) + 7200;
+    await redisClient.set(token_key, accessToken);
+    await redisClient.expireAt(token_key, expireTime);
+    return res.status(200).send("Token invalidated");
 }
 
 module.exports = {
-    signUp, login, deleteUser, addRoleToUser, checkRoleOfUser, getAllRolesUser,
+    signUp, login, deleteUser, addRoleToUser, checkRoleOfUser, getAllRolesUser, invalidateToken
 }

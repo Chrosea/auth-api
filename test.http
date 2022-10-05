@@ -19,10 +19,11 @@ Content-Type: application/json
 }
 
 ###
-POST {{url}}/invalidate-token
+POST {{url}}/logout
+Content-Type: application/json
 
 {
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzNjMzk1YTZjMjAxYjM3NDBhZGYxNGUiLCJpYXQiOjE2NjQ4OTEyNDEsImV4cCI6MTY2NDg5ODQ0MX0.YCKr-zZ7NAtvTdLoWiyk2hVoNu7O6bxO2b7ryvtuN2Q"
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzNjNWZlNmI0ZWExMDk0ODhiOTY4MTYiLCJpYXQiOjE2NjQ5Nzg5NTEsImV4cCI6MTY2NDk4NjE1MX0.CJ5Xu44t35XDjAmeflvo8uO5C4kHg6abKUMzN_02DCg"
 }
 
 ### Assign role to user "/user/assign/:userId/:roleId"
@@ -33,7 +34,7 @@ POST {{url}}/user/role/633c031ba3d08d231ece5d9b
 Content-Type: application/json
 
 {
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzNjMzk1YTZjMjAxYjM3NDBhZGYxNGUiLCJpYXQiOjE2NjQ4OTEyNDEsImV4cCI6MTY2NDg5ODQ0MX0.YCKr-zZ7NAtvTdLoWiyk2hVoNu7O6bxO2b7ryvtuN2Q"
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzNjNWZlNmI0ZWExMDk0ODhiOTY4MTYiLCJpYXQiOjE2NjQ5Nzg5NTEsImV4cCI6MTY2NDk4NjE1MX0.CJ5Xu44t35XDjAmeflvo8uO5C4kHg6abKUMzN_02DCg"
 }
 
 ### Get all roles
@@ -41,7 +42,7 @@ POST {{url}}/user/all-roles
 Content-Type: application/json
 
 {
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzNjMzk1YTZjMjAxYjM3NDBhZGYxNGUiLCJpYXQiOjE2NjQ4OTEyNDEsImV4cCI6MTY2NDg5ODQ0MX0.YCKr-zZ7NAtvTdLoWiyk2hVoNu7O6bxO2b7ryvtuN2Q"
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzNjNWZlNmI0ZWExMDk0ODhiOTY4MTYiLCJpYXQiOjE2NjQ5Nzg5NTEsImV4cCI6MTY2NDk4NjE1MX0.CJ5Xu44t35XDjAmeflvo8uO5C4kHg6abKUMzN_02DCg"
 }
 
 ### Delete user test
