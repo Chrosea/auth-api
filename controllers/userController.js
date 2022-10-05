@@ -73,7 +73,7 @@ const addRoleToUser = async (req, res, next) => {
         await User.findByIdAndUpdate(userId, { role: updatedRoles })
         res.status(201).json({
             data: { username: user.username, role: updatedRoles },
-            message: 'role has been updated'
+            message: 'Role has been updated'
         });
     } catch (error) {
         next(error)

@@ -19,18 +19,6 @@ describe('auth API', function () {
 
     const testRole = { value: 'new-role' }
 
-    this.afterAll(function (done) {
-        User.findOneAndRemove({ username: testUser.username })
-            .catch(function () {
-                console.warn(' collection may not exists!');
-            })
-        Role.findOneAndRemove({ value: testRole.value })
-            .catch(function () {
-                console.warn(' collection may not exists!');
-            })
-        done();
-    });
-
     it('should Register user, login user', function (done) {
         chai.request(server)
             .post('/signup')
@@ -50,7 +38,7 @@ describe('auth API', function () {
             })
     });
 
-    it('should not login non-registered user', function (done) {
+    it('should not login non-registered user', function () {
         const testUser2 = {
             'username': 'Dio Brando',
             'password': 'hacker'
@@ -62,17 +50,76 @@ describe('auth API', function () {
             .end((err, res) => {
                 res.should.have.status(403);
                 chai.expect(res.error.text).to.includes('Error: Username does not exist');
-                done();
             })
     });
 
-    it('should add new role', function (done) {
+    it('should add new role', function () {
         chai.request(server)
             .post('/role/create')
             .send({ value: 'new-role' })
             .end((err, res) => {
                 res.should.have.status(201);
-                done();
+            })
+
+    })
+
+    it('should assign role to user', () => {
+        return Role.findOne(testRole)
+            .then(assignedRole => {
+                console.log(testUser.username);
+                return User.findOne({ username: testUser.username })
+                    .then(user => {
+                        chai.request(server)
+                            .post(`/user/assign/${user._id.toString()}/${assignedRole._id.toString()}`)
+                            .end((err, res) => {
+                                const { data, message } = res.body
+                                const { username, role } = data;
+                                res.should.have.status(201);
+                                username.should.equals(testUser.username);
+                                chai.expect(role).to.include.members([assignedRole.value]);
+                                message.should.equals('Role has been updated');
+                            })
+                    })
+            })
+    })
+
+    it('should not assign role to user', () => {
+        return Role.findOne(testRole)
+            .then(assignedRole => {
+                return User.findOne({ username: testUser.username })
+                    .then(user => {
+                        chai.request(server)
+                            .post(`/user/assign/${user._id.toString()}/${assignedRole._id.toString()}`)
+                            .end((err, res) => {
+                                res.should.have.status(500);
+                                chai.expect(res.error.text).to.includes('Role already been assigned');
+                            })
+                    })
+            })
+    })
+
+    it('should delete role', () => {
+        return Role.findOne(testRole)
+            .then(result => {
+                chai.request(server)
+                    .delete(`/role/${result._id.toString()}`)
+                    .end((err, res) => {
+                        res.should.have.status(200);
+                        res.body.message.should.equals('Role has been deleted');
+                    })
+            })
+
+    })
+
+    it('should delete user', () => {
+        return User.findOne({ username: testUser.username })
+            .then(result => {
+                chai.request(server)
+                    .delete(`/user/${result._id.toString()}`)
+                    .end((err, res) => {
+                        res.should.have.status(200);
+                        res.body.message.should.equals('User has been deleted');
+                    })
             })
 
     })
