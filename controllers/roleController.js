@@ -5,7 +5,7 @@ const createRole = async (req, res, next) => {
         const { value } = req.body;
         const newRole = new Role({ value });
         await newRole.save();
-        res.json({
+        res.status(201).json({
             data: newRole,
         })
     } catch (error) {

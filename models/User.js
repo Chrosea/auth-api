@@ -4,7 +4,7 @@ const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: true, // TODO needs to promote error but non stop
+        unique: true,
     },
     password: {
         type: String,
@@ -20,5 +20,5 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-const User = mongoose.model('users', UserSchema); // mind s
+const User = mongoose.model('users', UserSchema);
 module.exports = User;

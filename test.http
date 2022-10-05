@@ -9,12 +9,12 @@ Content-Type: application/json
   "password": "123456"
 }
 
-###
+### Authenticate
 POST {{url}}/login
 Content-Type: application/json
 
 {
-  "username": "user1",
+  "username": "test1",
   "password": "123456"
 }
 
@@ -25,10 +25,10 @@ POST {{url}}/invalidate-token
   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzNjMzk1YTZjMjAxYjM3NDBhZGYxNGUiLCJpYXQiOjE2NjQ4OTEyNDEsImV4cCI6MTY2NDg5ODQ0MX0.YCKr-zZ7NAtvTdLoWiyk2hVoNu7O6bxO2b7ryvtuN2Q"
 }
 
-###
+### Assign role to user "/user/assign/:userId/:roleId"
 POST {{url}}/user/assign/633c395a6c201b3740adf14e/633c031ba3d08d231ece5d9b
 
-###
+### Verify role for user "/user/role/:roleId"
 POST {{url}}/user/role/633c031ba3d08d231ece5d9b
 Content-Type: application/json
 
@@ -36,7 +36,7 @@ Content-Type: application/json
   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzNjMzk1YTZjMjAxYjM3NDBhZGYxNGUiLCJpYXQiOjE2NjQ4OTEyNDEsImV4cCI6MTY2NDg5ODQ0MX0.YCKr-zZ7NAtvTdLoWiyk2hVoNu7O6bxO2b7ryvtuN2Q"
 }
 
-###
+### Get all roles
 POST {{url}}/user/all-roles
 Content-Type: application/json
 
@@ -44,10 +44,10 @@ Content-Type: application/json
   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MzNjMzk1YTZjMjAxYjM3NDBhZGYxNGUiLCJpYXQiOjE2NjQ4OTEyNDEsImV4cCI6MTY2NDg5ODQ0MX0.YCKr-zZ7NAtvTdLoWiyk2hVoNu7O6bxO2b7ryvtuN2Q"
 }
 
-###
+### Delete user test
 DELETE {{url}}/user/633bf9f5a22518b4f0435861
 
-###
+### Create role test
 POST {{url}}/role/create
 Content-Type: application/json
 
@@ -55,5 +55,5 @@ Content-Type: application/json
   "value": "guest"
 }
 
-###
+### Delete role test
 DELETE {{url}}/role/633bfa17a22518b4f0435866

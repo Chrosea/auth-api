@@ -19,7 +19,7 @@ const signUp = async (req, res, next) => {
         const accessToken = await createToken(newUser._id);
         newUser.accessToken = accessToken;
         await newUser.save();
-        res.json({
+        res.status(201).json({
             data: newUser,
             accessToken
         });
@@ -32,10 +32,10 @@ const login = async (req, res, next) => {
     try {
         const { username, password } = req.body
         const user = await User.findOne({ username });
-        if (!user) return next(new Error('Username does not exist'));
+        if (!user) next(new Error('Username does not exist'));
 
         const validPassword = await validatePassword(password, user.password);
-        if (!validPassword) return next(new Error('Password is not correct'))
+        if (!validPassword) next(new Error('Password is not correct'))
 
         const accessToken = await createToken(user._id);
         await User.findByIdAndUpdate(user._id, { accessToken });
@@ -44,7 +44,7 @@ const login = async (req, res, next) => {
             accessToken
         });
     } catch (error) {
-        next(error)
+        res.status(403).json({error: error.response.data.message});
     }
 }
 
@@ -70,7 +70,7 @@ const addRoleToUser = async (req, res, next) => {
 
         const updatedRoles = [...user.role, role.value]
         await User.findByIdAndUpdate(userId, { role: updatedRoles })
-        res.status(200).json({
+        res.status(201).json({
             data: { username: user.username, role: updatedRoles },
             message: 'role has been updated'
         });
@@ -112,5 +112,5 @@ const getAllRolesUser = async (req, res, next) => {
 }
 
 module.exports = {
-    signUp, login, deleteUser, addRoleToUser, checkRoleOfUser, getAllRolesUser, invalidateToken
+    signUp, login, deleteUser, addRoleToUser, checkRoleOfUser, getAllRolesUser,
 }
