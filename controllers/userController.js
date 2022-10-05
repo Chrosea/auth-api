@@ -110,6 +110,21 @@ const getAllRolesUser = async (req, res, next) => {
         next(error)
     }
 }
+/* TODO
+ * invalidate token is not recommended sense it break the intention of
+ * stateless verification, but one work around is to use blacklist to 
+ * store all the token and do another layer of verification. 
+ * 
+ * Another option is to change JWT_SECRET periodically so it will invalidate
+ * all token.
+ * 
+ * node.js packages have limited support for jwt blacklist, I have to 
+ * switch to another jwt library if I want to use the blacklist package.
+ * Due to time limit and my miss in plan I can only left it with TODO
+ */
+const invalidateToken = async (req, res, next) => {
+
+}
 
 module.exports = {
     signUp, login, deleteUser, addRoleToUser, checkRoleOfUser, getAllRolesUser,

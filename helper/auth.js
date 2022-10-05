@@ -17,4 +17,4 @@ const createToken = async (userId) => {
     });
 }
 
-module.exports = {verifyToken, createToken};
+module.exports = { verifyToken, createToken };

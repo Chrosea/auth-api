@@ -76,6 +76,11 @@ describe('auth API', function () {
             })
 
     })
+
+    /* TODO
+     * Each API route should have its own unit test as well.
+     * Edge cases like intentional error triggering case needs to be add.
+     */
 });
 
 
